@@ -1,52 +1,8 @@
 <template>
   <div class="items">
-    <div class="item">
-      <type-img class-prefix="list" />
-      <span class="num">+666.00</span>
-    </div>
-    <div class="item">
-      <type-img class-prefix="list" />
-      <span class="num">+666.00</span>
-    </div>
-    <div class="item">
-      <type-img class-prefix="list" />
-      <span class="num">+666.00</span>
-    </div>
-    <div class="item">
-      <type-img class-prefix="list" />
-      <span class="num">+666.00</span>
-    </div>
-    <div class="item">
-      <type-img class-prefix="list" />
-      <span class="num">+666.00</span>
-    </div>
-    <div class="item">
-      <type-img class-prefix="list" />
-      <span class="num">+666.00</span>
-    </div>
-    <div class="item">
-      <type-img class-prefix="list" />
-      <span class="num">+666.00</span>
-    </div>
-    <div class="item">
-      <type-img class-prefix="list" />
-      <span class="num">+666.00</span>
-    </div>
-    <div class="item">
-      <type-img class-prefix="list" />
-      <span class="num">+666.00</span>
-    </div>
-    <div class="item">
-      <type-img class-prefix="list" />
-      <span class="num">+666.00</span>
-    </div>
-    <div class="item">
-      <type-img class-prefix="list" />
-      <span class="num">+666.00</span>
-    </div>
-    <div class="item">
-      <type-img class-prefix="list" />
-      <span class="num">+666.00</span>
+    <div class="item" v-for="(item, index) in recordList" :key="index">
+      <type-img :type="item.type" :note="item.note" class-prefix="list"/>
+      <span class="num">{{ item.type.cut ? "+" : "-" }}{{ item.num }}</span>
     </div>
   </div>
 </template>
@@ -56,6 +12,7 @@ import TypeImg from '@/components/TypeImg.vue';
 
 export default {
   components: { TypeImg },
+  props: ['recordList'],
   data() {
     return {};
   },

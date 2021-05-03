@@ -14,3 +14,12 @@ $bg-grad: -webkit-linear-gradient(
 $bg-221223226: rgb(221 223 226);
 $bg-132133134: rgb(132 133 134);
 $bg-237237237: rgb(237 237 237);
+$bg-217217217: rgb(217 217 217);
+
+%clearFix {
+  &::after {
+    content: "";
+    clear: both;
+    display: block;
+  }
+}

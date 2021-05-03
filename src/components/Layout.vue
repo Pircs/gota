@@ -25,7 +25,7 @@ export default {
 
 .content {
   height: calc(100vh - 3.2rem);
-  overflow: scroll;
+  overflow: auto;
   overflow-x: hidden;
 }
 </style>

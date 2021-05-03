@@ -7,9 +7,21 @@ import {
   faLevelDownAlt,
   faLevelUpAlt,
   faPlus,
+  faBackspace,
+  faCalendarAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faWallet, faChartPie, faCog, faHeartBroken, faLevelDownAlt, faLevelUpAlt, faPlus);
+library.add(
+  faWallet,
+  faChartPie,
+  faCog,
+  faHeartBroken,
+  faLevelDownAlt,
+  faLevelUpAlt,
+  faPlus,
+  faBackspace,
+  faCalendarAlt,
+);
 
 export default FontAwesomeIcon;

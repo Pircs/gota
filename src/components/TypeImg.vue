@@ -1,18 +1,23 @@
 <template>
-  <div :class="{ [classPrefix + '-item']: classPrefix }">
-    <div class="img"></div>
+  <div :class="{ [classPrefix + '-item']: classPrefix }" @click="onClick()">
+    <div class="img">{{ type.emoji }}</div>
     <div class="tips">
-      <span>零食</span>
-      <span class="tip">吃啥吃啊</span>
+      <span>{{ type.name }}</span>
+      <span v-if="note" class="note">{{ note }}</span>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['classPrefix'],
+  props: ['classPrefix', 'type', 'note'],
   data() {
     return {};
+  },
+  methods: {
+    onClick() {
+      this.$emit('onClick:Type', this.type);
+    },
   },
 };
 </script>
@@ -27,9 +32,10 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.3s;
 }
 
-.tip {
+.note {
   font-size: 12px;
   color: rgb(187 189 191);
   margin-top: 2px;
