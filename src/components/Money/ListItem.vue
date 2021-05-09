@@ -1,8 +1,10 @@
 <template>
   <div class="items">
-    <div class="item" v-for="(item, index) in recordList" :key="index">
+    <div class="item" v-for="(item, index) in recordList" :key="index" @click="onClickItem(item)">
       <type-img :type="item.type" :note="item.note" class-prefix="list"/>
-      <span class="num">{{ item.type.cut ? "+" : "-" }}{{ item.num }}</span>
+      <span class="num" :class="{ redText: item.type.cut }">
+        {{ item.type.cut ? "+" : "-" }}{{ item.num }}
+      </span>
     </div>
   </div>
 </template>
@@ -15,6 +17,11 @@ export default {
   props: ['recordList'],
   data() {
     return {};
+  },
+  methods: {
+    onClickItem(val) {
+      this.$emit('click:item', val);
+    },
   },
 };
 </script>
@@ -39,6 +46,10 @@ export default {
       align-items: center;
     }
   }
+}
+
+.redText {
+  color: #d75846;
 }
 
 .items :last-child {

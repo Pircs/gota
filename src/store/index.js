@@ -35,6 +35,9 @@ export default new Vuex.Store({
     initRecordList(state, payload) {
       state.recordList = payload;
     },
+    deleteRecord(state, payload) {
+      state.recordList.splice(payload, 1);
+    },
   },
   actions: {
     async initRecordList(context) {
@@ -48,6 +51,16 @@ export default new Vuex.Store({
 
     async setRecordList(context, payload) {
       await context.commit('setRecordList', payload);
+      saveRecord(context.getters.recordList);
+    },
+
+    async deleteRecord(context, payload) {
+      const { recordList } = context.getters;
+      recordList.forEach((val, i) => {
+        if (val.create === payload) {
+          context.commit('deleteRecord', i);
+        }
+      });
       saveRecord(context.getters.recordList);
     },
   },

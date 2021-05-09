@@ -1,5 +1,5 @@
 <template>
-  <div class="date-picker" :class="{ active: showDatePick }">
+  <div class="date-picker">
     <van-datetime-picker
       v-model="currentDate"
       :type="type"
@@ -40,14 +40,7 @@ export default {
 
 <style scoped>
 .date-picker {
-  border-top: 2px solid #919191;
-  position: fixed;
   min-width: 100%;
-  bottom: -100%;
   transition: all 0.3s;
-}
-
-.active {
-  bottom: 0;
 }
 </style>

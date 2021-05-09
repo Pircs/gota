@@ -3,8 +3,8 @@
     <top-menu>
       <div @click="backTo">🔙</div>
       <div class="record-type">
-        <span :class="[nowType === 0 ? 'active' : '']" @click="_getTypes(0)">支出</span>
-        <span :class="[nowType === 1 ? 'active' : '']" @click="_getTypes(1)">收入</span>
+        <span :class="[nowType === 0 ? 'active' : '']" @click="getTypes(0)">支出</span>
+        <span :class="[nowType === 1 ? 'active' : '']" @click="getTypes(1)">收入</span>
       </div>
       <span>❗</span>
     </top-menu>
@@ -27,7 +27,10 @@
       />
       <num-pad :num.sync="record.num" @record:done="saveRecord($event)" class="num-pad"/>
     </div>
-    <date-picker :show-date-pick.sync="showDatePick" type="date" @getPickDate="getPickDate"/>
+
+    <van-action-sheet v-model="showDatePick" :round="false" duration="0.2">
+      <date-picker :show-date-pick.sync="showDatePick" type="date" @getPickDate="getPickDate"/>
+    </van-action-sheet>
   </div>
 </template>
 

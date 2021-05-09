@@ -1,15 +1,15 @@
 <template>
   <div class="panel">
     <span>收支盈余</span>
-    <span class="num">10000.00 <small>￥</small></span>
+    <span class="num">{{ surplus }} <small>￥</small></span>
     <div class="type">
       <span>
         <icon class="down" icon="level-down-alt"/>
-        1000
+        {{ payOut }}
       </span>
       <span>
         <icon class="up" icon="level-up-alt"/>
-        2000
+        {{ inCome }}
       </span>
     </div>
   </div>
@@ -19,6 +19,13 @@
 export default {
   data() {
     return {};
+  },
+  props: ['inCome', 'payOut'],
+  computed: {
+    surplus() {
+      const count = this.inCome - this.payOut;
+      return count.toFixed(2);
+    },
   },
 };
 </script>

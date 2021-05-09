@@ -7,22 +7,44 @@
       </span>
     </top-menu>
     <div class="money">
-      <NumPanel/>
-      <div class="label">
-        <span>今日</span>
-        <div>
-          <span class="income">收:{{ income }}￥</span>
-          <span>支:{{ payout }}￥</span>
+      <NumPanel :in-come="monthIncome" :pay-out="monthPayOut"/>
+
+      <div v-for="item in recordList" :key="item.create">
+        <div class="label">
+          <span>{{ item.create }}</span>
+          <div>
+            <span class="income">收:{{ item.income }}￥</span>
+            <span>支:{{ item.payout }}￥</span>
+          </div>
         </div>
+        <list-item :record-list="item.item" @click:item="onClickItem"/>
       </div>
-      <list-item :record-list="this.recordList"/>
+
+      <div v-if="recordList.length <= 0" class="noRecord">
+        <span>没有任何记录</span>
+      </div>
+
       <div class="add-record">
         <router-link to="/money/add">
           <icon icon="plus"/>
         </router-link>
       </div>
     </div>
-    <date-picker :show-date-pick.sync="showDatePick" type="year-month" @getPickDate="getPickDate"/>
+
+    <van-action-sheet v-model="showDatePick" :round="false" duration="0.2">
+      <date-picker
+        type="year-month"
+        :show-date-pick.sync="showDatePick"
+        @getPickDate="getPickDate"
+      />
+    </van-action-sheet>
+    <van-action-sheet
+      v-model="itemAction.show"
+      :actions="itemAction.actions"
+      :round="false"
+      @select="onSelectAction"
+      cancel-text="取消"
+    />
   </Layout>
 </template>
 
@@ -31,9 +53,10 @@ import Layout from '@/components/Layout.vue';
 import NumPanel from '@/components/Money/NumPanel.vue';
 import TopMenu from '@/components/TopMenu.vue';
 import ListItem from '@/components/Money/ListItem.vue';
-import { mapGetters, mapActions } from 'vuex';
 import DatePicker from '@/components/DatePicker.vue';
 import dayjs from 'dayjs';
+import getRecordList from '@/lib/sortRecord';
+import { mapActions } from 'vuex';
 
 export default {
   components: {
@@ -46,44 +69,67 @@ export default {
   data() {
     return {
       showDatePick: false,
-      datePick: new Date(),
+      datePick: dayjs().format('YYYY-MM'),
+      itemAction: {
+        show: false,
+        actions: [{ name: '删除', color: '#ee0a24' }, { name: '编辑' }],
+        select: null,
+      },
     };
   },
-  beforeMount() {
-    this.initRecordList();
-    this.initNumPad();
-  },
   computed: {
-    ...mapGetters(['recordList']),
-    income() {
-      return this.initNumPad(1);
-    },
-    payout() {
-      return this.initNumPad(0);
-    },
     pickDateText() {
-      let month = dayjs().month() + 1;
+      let month = dayjs(new Date(this.datePick)).month() + 1;
       if (month < 10) {
         month = `0${month}`;
       }
       return `${month}月`;
     },
-  },
-  methods: {
-    ...mapActions(['initRecordList']),
 
-    getPickDate(event) {
-      this.datePick = event;
+    recordList() {
+      return getRecordList(this.datePick);
     },
 
-    initNumPad(cut) {
-      let temp = 0;
+    monthIncome() {
+      return this.getMonthMoney(1);
+    },
+
+    monthPayOut() {
+      return this.getMonthMoney(0);
+    },
+  },
+  methods: {
+    ...mapActions(['deleteRecord']),
+    getPickDate(event) {
+      this.datePick = dayjs(event).format('YYYY-MM');
+    },
+
+    getMonthMoney(cut) {
+      let count = 0;
       this.recordList.forEach((val) => {
-        if (val.type.cut === cut) {
-          temp += parseFloat(val.num);
+        if (cut === 1) {
+          count += val.income;
+        }
+        if (cut === 0) {
+          count += val.payout;
         }
       });
-      return temp;
+      return count.toFixed(2);
+    },
+
+    onClickItem($event) {
+      this.itemAction.select = $event;
+      this.itemAction.show = true;
+    },
+
+    onSelectAction(item) {
+      if (item.name === this.itemAction.actions[0].name) {
+        this.deleteRecord(this.itemAction.select);
+      }
+      if (item.name === this.itemAction.actions[1].name) {
+        console.log(this.itemAction.select);
+      }
+      this.itemAction.show = false;
     },
   },
 };
@@ -103,7 +149,7 @@ export default {
 
 .label {
   display: flex;
-  margin-top: 2.2rem;
+  margin-top: 1.5rem;
   margin-bottom: 1rem;
   justify-content: space-between;
   color: $bg-132133134;
@@ -128,6 +174,14 @@ export default {
 .income {
   color: $bg-red;
   margin-right: 1rem;
+}
+
+.noRecord {
+  background: #fff;
+  margin-top: 1.5rem;
+  text-align: center;
+  padding: 2rem 0;
+  border-radius: 7px;
 }
 
 ::v-deep {
