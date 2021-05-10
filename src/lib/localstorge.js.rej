@@ -1,0 +1,33 @@
+diff a/src/lib/localstorge.js b/src/lib/localstorge.js	(rejected hunks)
+@@ -5,13 +5,13 @@ const defaultTypes = [
+-  {name: "零食", emoji: "🍫", cut: 0},
+-  {name: "出行", emoji: "🚗", cut: 0},
+-  {name: "旅游", emoji: "🏞️", cut: 0},
+-  {name: "吃饭", emoji: "🍔", cut: 0},
+-  {name: "购物", emoji: "🛒", cut: 0},
+-  {name: "运动", emoji: "🚴", cut: 0},
+-  {name: "医疗", emoji: "👨‍⚕️", cut: 0},
+-  {name: "数码", emoji: "💻", cut: 0},
+-  {name: "住房", emoji: "🏠", cut: 0},
+-  {name: "工资", emoji: "💳", cut: 1},
+-  {name: "红包", emoji: "🧧", cut: 1},
+-  {name: "股票", emoji: "💹", cut: 1},
+-  {name: "外快", emoji: "💰", cut: 1},
++  { name: '零食', emoji: '🍫', cut: 0 },
++  { name: '出行', emoji: '🚗', cut: 0 },
++  { name: '旅游', emoji: '🏞️', cut: 0 },
++  { name: '吃饭', emoji: '🍔', cut: 0 },
++  { name: '购物', emoji: '🛒', cut: 0 },
++  { name: '运动', emoji: '🚴', cut: 0 },
++  { name: '医疗', emoji: '👨‍⚕️', cut: 0 },
++  { name: '数码', emoji: '💻', cut: 0 },
++  { name: '住房', emoji: '🏠', cut: 0 },
++  { name: '工资', emoji: '💳', cut: 1 },
++  { name: '红包', emoji: '🧧', cut: 1 },
++  { name: '股票', emoji: '💹', cut: 1 },
++  { name: '外快', emoji: '💰', cut: 1 },
+@@ -38 +38,3 @@ function saveTypes(val) {
+-export {readRecord, saveRecord, readTypes, saveTypes};
++export {
++  readRecord, saveRecord, readTypes, saveTypes,
++};

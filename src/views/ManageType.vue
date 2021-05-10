@@ -6,9 +6,9 @@
         :default="cateType[0].type"
         @change-type="defaultCut = $event.type"
       />
-      <div class="item" v-for="(item, index) in filterType" :key="item.name">
+      <div class="item" v-for="item in filterType" :key="item.name">
         <type-img :type="item.item" class-prefix="list" />
-        <div class="del-this" @click="deleteType(index)">
+        <div class="del-this" @click="deleteType(item.index)">
           <span>❌</span>
         </div>
       </div>
