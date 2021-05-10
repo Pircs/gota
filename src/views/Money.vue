@@ -2,12 +2,12 @@
   <Layout>
     <top-menu class="menu-top">
       <span @click="showDatePick = !showDatePick">
-        <icon icon="calendar-alt"/>
+        <icon icon="calendar-alt" />
         {{ pickDateText }}
       </span>
     </top-menu>
     <div class="money">
-      <NumPanel :in-come="monthIncome" :pay-out="monthPayOut"/>
+      <NumPanel :in-come="monthIncome" :pay-out="monthPayOut" />
 
       <div v-for="item in recordList" :key="item.create">
         <div class="label">
@@ -17,7 +17,7 @@
             <span>支:{{ item.payout }}￥</span>
           </div>
         </div>
-        <list-item :record-list="item.item" @click:item="onClickItem"/>
+        <list-item :record-list="item.item" @click:item="onClickItem" />
       </div>
 
       <div v-if="recordList.length <= 0" class="noRecord">
@@ -26,7 +26,7 @@
 
       <div class="add-record">
         <router-link to="/money/add">
-          <icon icon="plus"/>
+          <icon icon="plus" />
         </router-link>
       </div>
     </div>
@@ -124,10 +124,10 @@ export default {
 
     onSelectAction(item) {
       if (item.name === this.itemAction.actions[0].name) {
-        this.deleteRecord(this.itemAction.select);
+        this.deleteRecord(this.itemAction.select.create);
       }
       if (item.name === this.itemAction.actions[1].name) {
-        console.log(this.itemAction.select);
+        this.$router.push({ name: 'addRecord', params: this.itemAction.select });
       }
       this.itemAction.show = false;
     },

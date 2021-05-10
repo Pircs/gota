@@ -38,6 +38,9 @@ export default new Vuex.Store({
     deleteRecord(state, payload) {
       state.recordList.splice(payload, 1);
     },
+    editRecord(state, payload) {
+      state.recordList[payload.index] = payload.payload;
+    },
   },
   actions: {
     async initRecordList(context) {
@@ -61,6 +64,16 @@ export default new Vuex.Store({
           context.commit('deleteRecord', i);
         }
       });
+      saveRecord(context.getters.recordList);
+    },
+
+    async editRecord(context, payload) {
+      const { recordList } = context.getters;
+      let index = 0;
+      recordList.forEach((val, i) => {
+        if (val.create === payload.create) index = i;
+      });
+      context.commit('editRecord', { index, payload });
       saveRecord(context.getters.recordList);
     },
   },

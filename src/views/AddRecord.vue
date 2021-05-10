@@ -3,8 +3,8 @@
     <top-menu>
       <div @click="backTo">🔙</div>
       <div class="record-type">
-        <span :class="[nowType === 0 ? 'active' : '']" @click="getTypes(0)">支出</span>
-        <span :class="[nowType === 1 ? 'active' : '']" @click="getTypes(1)">收入</span>
+        <span :class="[nowType === 0 ? 'active' : '']" @click="nowType = 0">支出</span>
+        <span :class="[nowType === 1 ? 'active' : '']" @click="nowType = 1">收入</span>
       </div>
       <span>❗</span>
     </top-menu>
@@ -18,6 +18,7 @@
           :type="item"
           @onClick:Type="selectType($event, index)"
         />
+        <type-img class-prefix="type" :type="{ name: '添加', emoji: '➕' }" />
       </div>
       <note-input
         :num="record.num"
@@ -25,11 +26,11 @@
         :note.sync="record.note"
         :create-day="selectDate"
       />
-      <num-pad :num.sync="record.num" @record:done="saveRecord($event)" class="num-pad"/>
+      <num-pad :num.sync="record.num" @record:done="saveRecord($event)" class="num-pad" />
     </div>
 
     <van-action-sheet v-model="showDatePick" :round="false" duration="0.2">
-      <date-picker :show-date-pick.sync="showDatePick" type="date" @getPickDate="getPickDate"/>
+      <date-picker :show-date-pick.sync="showDatePick" type="date" @getPickDate="getPickDate" />
     </van-action-sheet>
   </div>
 </template>
@@ -55,8 +56,7 @@ export default {
   data() {
     return {
       checkType: null,
-      typeList: [],
-      nowType: null,
+      nowType: 0,
       showDatePick: false,
       record: {
         num: '0.00',
@@ -64,10 +64,12 @@ export default {
         type: null,
         create: new Date(),
       },
+      editModel: false,
     };
   },
   computed: {
     ...mapGetters(['types']),
+
     selectDate() {
       const res = dayjs().isSame(this.record.create, 'day');
       if (res) {
@@ -77,14 +79,24 @@ export default {
       const day = dayjs(this.record.create).date();
       return `${month}-${day}`;
     },
+
+    typeList() {
+      const temp = [];
+      this.types.forEach((val) => {
+        if (val.cut === this.nowType) {
+          temp.push(val);
+        }
+      });
+      return temp;
+    },
   },
 
   beforeMount() {
-    this.getTypes(0);
+    this.checkEdit();
   },
 
   methods: {
-    ...mapActions(['setRecordList']),
+    ...mapActions(['setRecordList', 'editRecord']),
     selectType(event, index) {
       this.checkType = index;
       this.record.type = event;
@@ -103,13 +115,20 @@ export default {
       if (this.record.note === '备注') {
         this.record.note = null;
       }
-      this.record.create = new Date().toISOString();
-      this.setRecordList(this.record);
+
+      // 判断是新记一笔还是编辑
+      if (this.editModel === false) {
+        this.record.create = new Date().toISOString();
+        this.setRecordList(this.record);
+      } else {
+        this.editRecord(this.record);
+      }
 
       // true 代表用需要再次记账，不用返回
       if (!event.status) {
         return this.$router.back();
       }
+      this.renewRecord();
       return Toast('记账成功，再记一笔吧');
     },
 
@@ -117,23 +136,30 @@ export default {
       this.record.create = event;
     },
 
+    renewRecord() {
+      this.checkType = null;
+      this.record = {
+        num: '0.00',
+        note: '备注',
+        type: null,
+        create: new Date(),
+      };
+    },
+
     backTo() {
       this.$router.back();
     },
 
-    getTypes(cut) {
-      // 重置选中类别 防止切换类型复选
-      this.checkType = null;
-
-      // 执行类型切换
-      this.nowType = cut;
-      const temp = [];
-      this.types.forEach((val) => {
-        if (val.cut === cut) {
-          temp.push(val);
+    checkEdit() {
+      const { params } = this.$route;
+      if (Object.keys(params).length === 0) return;
+      this.editModel = true;
+      this.record = params;
+      this.typeList.forEach((val, index) => {
+        if (val.name === this.record.type.name) {
+          this.checkType = index;
         }
       });
-      this.typeList = temp;
     },
   },
 };

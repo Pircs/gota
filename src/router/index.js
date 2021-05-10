@@ -24,6 +24,7 @@ const router = new VueRouter({
       component: () => import('@/views/Setting.vue'),
     },
     {
+      name: 'addRecord',
       path: '/money/add',
       component: () => import('@/views/AddRecord.vue'),
     },
