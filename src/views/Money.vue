@@ -17,7 +17,9 @@
             <span>支:{{ item.payout }}￥</span>
           </div>
         </div>
-        <list-item :record-list="item.item" @click:item="onClickItem" />
+        <div class="items">
+          <list-item :record-list="item.item" @click:item="onClickItem" />
+        </div>
       </div>
 
       <div v-if="recordList.length <= 0" class="noRecord">
@@ -155,6 +157,10 @@ export default {
   color: $bg-132133134;
 }
 
+.items {
+  -webkit-box-shadow: 0 12px 17px 0 rgba(123, 123, 123, 0.05);
+}
+
 .add-record {
   position: fixed;
   bottom: 5rem;
@@ -182,6 +188,7 @@ export default {
   text-align: center;
   padding: 2rem 0;
   border-radius: 7px;
+  -webkit-box-shadow: 0 12px 17px 0 rgba(123, 123, 123, 0.05);
 }
 
 ::v-deep {

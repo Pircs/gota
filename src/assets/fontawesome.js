@@ -9,6 +9,10 @@ import {
   faPlus,
   faBackspace,
   faCalendarAlt,
+  faTags,
+  faAngleRight,
+  faCodeBranch,
+  faFileCsv,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -22,6 +26,10 @@ library.add(
   faPlus,
   faBackspace,
   faCalendarAlt,
+  faTags,
+  faAngleRight,
+  faCodeBranch,
+  faFileCsv,
 );
 
 export default FontAwesomeIcon;

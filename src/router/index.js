@@ -29,6 +29,10 @@ const router = new VueRouter({
       component: () => import('@/views/AddRecord.vue'),
     },
     {
+      path: '/setting/types',
+      component: () => import('@/views/ManageType.vue'),
+    },
+    {
       path: '*',
       component: () => import('@/views/NotFound.vue'),
     },

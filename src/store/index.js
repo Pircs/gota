@@ -36,6 +36,9 @@ export default new Vuex.Store({
     addType(state, payload) {
       state.types.push(payload);
     },
+    deleteType(state, payload) {
+      state.types.splice(payload, 1);
+    },
   },
   actions: {
     async initRecordList(context) {
@@ -78,6 +81,11 @@ export default new Vuex.Store({
       if (temp.length > 0) return Toast(`${payload.name} 已经存在`);
       await context.commit('addType', payload);
       return saveTypes(context.getters.types);
+    },
+
+    async deleteTypes(context, payload) {
+      context.commit('deleteType', payload);
+      saveTypes(context.getters.types);
     },
   },
   modules: {},

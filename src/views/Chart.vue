@@ -1,18 +1,18 @@
 <template>
   <Layout>
     <div class="head">
-      <SwitchButton :types="cateType" :default="cateType[0].type" @change-type="changeCate"/>
-      <SwitchButton :types="dateType" :default="dateType[0].type" @change-type="changeDate"/>
+      <SwitchButton :types="cateType" :default="cateType[0].type" @change-type="changeCate" />
+      <SwitchButton :types="dateType" :default="dateType[0].type" @change-type="changeDate" />
     </div>
 
     <div class="panel">
       <span>收支分析</span>
-      <Budget :record="this.recordList" @update:income="income = $event"/>
+      <Budget :record="this.recordList" @update:income="income = $event" />
     </div>
 
     <div class="panel">
       <span>{{ defaultCut ? "收入" : "支出" }}占比TOP5</span>
-      <PieChart :echarts="totalFilter" class="charts"/>
+      <PieChart :echarts="totalFilter" class="charts" />
     </div>
 
     <div class="panel">
@@ -121,7 +121,7 @@ export default {
   background: $bg-white;
   border-radius: 7px;
   padding: 1rem;
-  -webkit-box-shadow: 0 12px 17px 0 rgba(123, 123, 123, 0.1);
+  -webkit-box-shadow: 0 12px 17px 0 rgba(123, 123, 123, 0.05);
 
   > span {
     font-weight: 600;
