@@ -18,7 +18,11 @@
           :type="item"
           @onClick:Type="selectType($event, index)"
         />
-        <type-img class-prefix="type" :type="{ name: '添加', emoji: '➕' }" />
+        <type-img
+          class-prefix="type"
+          :type="{ name: '添加', emoji: '➕' }"
+          @click.native="addType"
+        />
       </div>
       <note-input
         :num="record.num"
@@ -26,12 +30,16 @@
         :note.sync="record.note"
         :create-day="selectDate"
       />
-      <num-pad :num.sync="record.num" @record:done="saveRecord($event)" class="num-pad" />
+      <num-pad :num.sync="record.num" @record:done="saveRecord($event)" class="num-pad"/>
     </div>
 
     <van-action-sheet v-model="showDatePick" :round="false" duration="0.2">
-      <date-picker :show-date-pick.sync="showDatePick" type="date" @getPickDate="getPickDate" />
+      <date-picker :show-date-pick.sync="showDatePick" type="date" @getPickDate="getPickDate"/>
     </van-action-sheet>
+
+    <van-popup v-model="showAddType" round>
+      <add-type :type="nowType" @close:add="showAddType = false"/>
+    </van-popup>
   </div>
 </template>
 
@@ -44,9 +52,11 @@ import { mapGetters, mapActions } from 'vuex';
 import { Toast } from 'vant';
 import DatePicker from '@/components/DatePicker.vue';
 import dayjs from 'dayjs';
+import AddType from '@/components/addType.vue';
 
 export default {
   components: {
+    AddType,
     DatePicker,
     TypeImg,
     NoteInput,
@@ -58,6 +68,7 @@ export default {
       checkType: null,
       nowType: 0,
       showDatePick: false,
+      showAddType: false,
       record: {
         num: '0.00',
         note: '备注',
@@ -92,11 +103,12 @@ export default {
   },
 
   beforeMount() {
+    this.initTypes();
     this.checkEdit();
   },
 
   methods: {
-    ...mapActions(['setRecordList', 'editRecord']),
+    ...mapActions(['setRecordList', 'editRecord', 'initTypes']),
     selectType(event, index) {
       this.checkType = index;
       this.record.type = event;
@@ -144,6 +156,10 @@ export default {
         type: null,
         create: new Date(),
       };
+    },
+
+    addType() {
+      this.showAddType = !this.showAddType;
     },
 
     backTo() {

@@ -1,27 +1,15 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { readRecord, saveRecord } from '@/lib/localstorge';
+import { Toast } from 'vant';
+import {
+  readRecord, readTypes, saveRecord, saveTypes,
+} from '@/lib/localstorge';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    types: [
-      { name: '零食', emoji: '🍫', cut: 0 },
-      { name: '出行', emoji: '🚗', cut: 0 },
-      { name: '旅游', emoji: '🏞️', cut: 0 },
-      { name: '吃饭', emoji: '🍔', cut: 0 },
-      { name: '购物', emoji: '🛒', cut: 0 },
-      { name: '水果', emoji: '🍉', cut: 0 },
-      { name: '运动', emoji: '🚴', cut: 0 },
-      { name: '医疗', emoji: '👨‍⚕️', cut: 0 },
-      { name: '数码', emoji: '💻', cut: 0 },
-      { name: '住房', emoji: '🏠', cut: 0 },
-      { name: '工资', emoji: '💳', cut: 1 },
-      { name: '红包', emoji: '🧧', cut: 1 },
-      { name: '股票', emoji: '💹', cut: 1 },
-      { name: '外快', emoji: '💰', cut: 1 },
-    ],
+    types: [],
     recordList: [],
   },
   getters: {
@@ -29,11 +17,11 @@ export default new Vuex.Store({
     recordList: (state) => state.recordList,
   },
   mutations: {
-    setRecordList(state, payload) {
-      state.recordList.push(payload);
-    },
     initRecordList(state, payload) {
       state.recordList = payload;
+    },
+    setRecordList(state, payload) {
+      state.recordList.push(payload);
     },
     deleteRecord(state, payload) {
       state.recordList.splice(payload, 1);
@@ -41,15 +29,18 @@ export default new Vuex.Store({
     editRecord(state, payload) {
       state.recordList[payload.index] = payload.payload;
     },
+
+    initTypes(state, payload) {
+      state.types = payload;
+    },
+    addType(state, payload) {
+      state.types.push(payload);
+    },
   },
   actions: {
     async initRecordList(context) {
-      let res;
-      res = await readRecord();
-      if (!res) {
-        res = [];
-      }
-      context.commit('initRecordList', res);
+      const record = await readRecord();
+      context.commit('initRecordList', record);
     },
 
     async setRecordList(context, payload) {
@@ -59,7 +50,7 @@ export default new Vuex.Store({
 
     async deleteRecord(context, payload) {
       const { recordList } = context.getters;
-      recordList.forEach((val, i) => {
+      await recordList.forEach((val, i) => {
         if (val.create === payload) {
           context.commit('deleteRecord', i);
         }
@@ -75,6 +66,18 @@ export default new Vuex.Store({
       });
       context.commit('editRecord', { index, payload });
       saveRecord(context.getters.recordList);
+    },
+
+    async initTypes(context) {
+      const types = await readTypes();
+      context.commit('initTypes', types);
+    },
+
+    async addType(context, payload) {
+      const temp = context.getters.types.filter((val) => (val.name === payload.name ? val : null));
+      if (temp.length > 0) return Toast(`${payload.name} 已经存在`);
+      await context.commit('addType', payload);
+      return saveTypes(context.getters.types);
     },
   },
   modules: {},
