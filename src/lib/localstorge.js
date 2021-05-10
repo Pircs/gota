@@ -7,7 +7,6 @@ const defaultTypes = [
   { name: '旅游', emoji: '🏞️', cut: 0 },
   { name: '吃饭', emoji: '🍔', cut: 0 },
   { name: '购物', emoji: '🛒', cut: 0 },
-  { name: '水果', emoji: '🍉', cut: 0 },
   { name: '运动', emoji: '🚴', cut: 0 },
   { name: '医疗', emoji: '👨‍⚕️', cut: 0 },
   { name: '数码', emoji: '💻', cut: 0 },

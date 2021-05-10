@@ -20,15 +20,13 @@
           </div>
         </router-link>
 
-        <a href="#">
-          <div class="item">
-            <div class="title">
-              <icon class="icon" icon="file-csv" />
-              <span>导出为CSV</span>
-            </div>
-            <icon icon="angle-right" />
+        <div class="item" @click="exportExcel">
+          <div class="title">
+            <icon class="icon" icon="file-csv" />
+            <span>导出为CSV</span>
           </div>
-        </a>
+          <icon icon="angle-right" />
+        </div>
 
         <a href="#">
           <div class="item">
@@ -46,11 +44,47 @@
 
 <script>
 import Layout from '@/components/Layout.vue';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   components: { Layout },
   data() {
     return {};
+  },
+  beforeMount() {
+    this.initRecordList();
+  },
+  computed: {
+    ...mapGetters(['recordList']),
+  },
+  methods: {
+    ...mapActions(['initRecordList']),
+    exportExcel() {
+      const recordList = this.sortOut(this.recordList);
+      let str = '类别,金额,备注,时间\n';
+      recordList.forEach((val, index) => {
+        Object.keys(val).forEach((item) => {
+          str += `${`${recordList[index][item]}\t`},`;
+        });
+        str += '\n';
+      });
+      const uri = `data:text/csv;charset=utf-8,\ufeff${encodeURIComponent(str)}`;
+      const link = document.createElement('a');
+      link.href = uri;
+      link.download = '账目.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+
+    sortOut(val) {
+      return val.map((item) => ({
+        type: item.type.name,
+        num: item.num,
+        note: item.note,
+        create: item.create,
+      }));
+    },
   },
 };
 </script>
