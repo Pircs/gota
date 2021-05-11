@@ -162,8 +162,8 @@ export default {
 }
 
 .add-record {
-  position: fixed;
-  bottom: 5rem;
+  position: absolute;
+  bottom: 2rem;
   right: 2rem;
   border-radius: 50%;
   width: 3rem;

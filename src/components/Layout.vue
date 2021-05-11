@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="content">
-      <slot/>
+      <slot />
     </div>
-    <Nav class="nav"/>
+    <Nav class="nav" />
   </div>
 </template>
 
@@ -24,8 +24,9 @@ export default {
 }
 
 .content {
-  height: calc(100vh - 3.2rem);
+  height: calc(100% - 3.2rem);
   overflow: auto;
   overflow-x: hidden;
+  position: relative;
 }
 </style>
