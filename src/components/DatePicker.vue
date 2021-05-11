@@ -24,7 +24,8 @@ export default {
   },
   methods: {
     confirm() {
-      this.$emit('getPickDate', this.currentDate.toISOString());
+      const date = new Date(this.currentDate.getTime() + 8 * 60 * 60 * 1000);
+      this.$emit('getPickDate', date.toISOString());
       this.closeDatePicker();
     },
     cancel() {

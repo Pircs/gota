@@ -145,6 +145,7 @@ export default {
     },
 
     getPickDate(event) {
+      console.log(event);
       this.record.create = event;
     },
 
