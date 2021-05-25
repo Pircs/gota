@@ -2,12 +2,13 @@
   <div id="app">
     <div class="mobile-tips">
       <div class="tips">
-        <span> 请使用手机 </span> <br/>
-        <span>或</span><br/>
-        <span>使用开发者工具模拟手机查看</span>
+        <span>使用开发者工具模拟手机查看</span><br />
+        <span>或</span><br />
+        <span>手机扫码查看</span> <br />
+        <img src="./assets/qrcode.png" alt="qrcode" />
       </div>
     </div>
-    <router-view class="app-page"/>
+    <router-view class="app-page" />
   </div>
 </template>
 
@@ -54,6 +55,10 @@ body {
       > span {
         margin: 0.3rem;
         display: inline-block;
+      }
+      > img {
+        margin-top: 1rem;
+        max-width: 150px;
       }
     }
   }
