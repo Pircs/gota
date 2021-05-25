@@ -15,6 +15,11 @@ export default {
       this.initEcharts();
     },
   },
+  computed: {
+    chartsDom() {
+      return echarts.init(document.getElementById('charts'));
+    },
+  },
   methods: {
     initEcharts() {
       if (this.echarts.length > 0) {
@@ -24,7 +29,6 @@ export default {
       }
     },
     setEcharts(val) {
-      const chartsDom = echarts.init(document.getElementById('charts'));
       const option = {
         series: [
           {
@@ -41,7 +45,7 @@ export default {
           },
         ],
       };
-      chartsDom.setOption(option);
+      this.chartsDom.setOption(option);
     },
   },
 };
